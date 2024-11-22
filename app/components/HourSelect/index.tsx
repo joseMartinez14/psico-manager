@@ -1,9 +1,10 @@
-import { Grid2, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import React from 'react'
 import HourSelectItem from '../HourSelectItem';
 import { Controller } from 'react-hook-form';
 import { COLORS } from '@/utils/Contants';
 import { DayHourAvailabilityItem } from '@/utils/Types';
+import { BeatLoader } from 'react-spinners';
 
 interface HourSelectProps {
     data: DayHourAvailabilityItem[];
@@ -11,25 +12,27 @@ interface HourSelectProps {
     control: any;
     isRequired: boolean;
     error?: string;
+    loading: boolean;
+    onSelect: (hourValue: string) => void;
 }
 
 const HourSelect = (props: HourSelectProps) => {
 
-    const { data, selectedValue, control, isRequired, error } = props;
+    const { data, selectedValue, control, isRequired, error, loading, onSelect } = props;
 
     return (
-        <div>
-
+        <Box >
+            <BeatLoader loading={loading} />
             <Controller
                 name={selectedValue}
                 control={control}
                 rules={{ required: isRequired }}
                 render={({ field: { onChange, value } }) => (
                     <>
-                        <Grid2 container spacing={2}>
+                        <Grid2 container spacing={5} >
                             {data.map((item) => (
-                                <Grid2 size={{ lg: 2, md: 3 }}>
-                                    <HourSelectItem onChange={onChange} hourValue={item.hour} width={150} height={50} state={item.state} fontSize={25} />
+                                <Grid2 >
+                                    <HourSelectItem onSelect={onSelect} onChange={onChange} id={item.document_id} hourValue={item.hour} width={80} height={30} state={item.state} fontSize={16} />
                                 </Grid2>
                             ))}
                         </Grid2>
@@ -49,7 +52,7 @@ const HourSelect = (props: HourSelectProps) => {
                     </>
                 )}
             />
-        </div>
+        </Box>
     )
 }
 

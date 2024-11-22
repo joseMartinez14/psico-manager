@@ -47,6 +47,8 @@ export default function layout({
           sx={{
             color: 'black',
             fontWeight: 500,
+
+            fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
             fontFamily: ["Pinyon Script", "cursive"].join(","),
             fontStyle: "normal",
             zIndex: 2,

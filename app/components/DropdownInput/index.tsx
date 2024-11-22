@@ -2,10 +2,15 @@ import { Controller } from 'react-hook-form';
 import { Box, MenuItem, Select, Typography } from '@mui/material';
 import { COLORS } from '@/utils/Contants';
 
+interface DataStructure {
+  value: string;
+  id: string;
+}
+
 interface DropdownInputProps {
   control: any;
   title?: string;
-  data: string[];
+  data: DataStructure[];
   value: string;
   error?: string;
   placeholder?: string;
@@ -32,7 +37,7 @@ const DropdownInput = (props: DropdownInputProps) => {
                 gutterBottom
                 sx={{
                   color: COLORS.black,
-                  fontSize: '18px',
+                  fontSize: '15px',
                   margin: 0,
                   padding: 0,
                   fontWeight: 500,
@@ -53,12 +58,10 @@ const DropdownInput = (props: DropdownInputProps) => {
               placeholder={placeholder}
               sx={{
                 width: '100%',
-                color: COLORS.secondary,
-                borderColor: COLORS.neutral400,
-                backgroundColor: COLORS.neutral100,
+                borderColor: COLORS.black,
                 height: '49px',
                 '&>svg': {
-                  color: COLORS.neutral400,
+                  color: COLORS.black,
                 },
                 '& .MuiSelect-iconOpen': {
                   transform: 'none',
@@ -67,8 +70,8 @@ const DropdownInput = (props: DropdownInputProps) => {
                 ...selectStyles,
               }}>
               {data.map((item) => (
-                <MenuItem key={item} value={item}>
-                  {item}
+                <MenuItem key={item.id} value={item.id}>
+                  {item.value}
                 </MenuItem>
               ))}
             </Select>

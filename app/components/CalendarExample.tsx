@@ -89,9 +89,6 @@ export default function DateCalendarServerRequest() {
 
     const handleMonthChange = (date: Dayjs) => {
 
-        console.log("*** Se apreto el month ****")
-        console.log(date.year())
-        console.log(date.month())
         if (requestAbortController.current) {
             // make sure that you are aborting useless requests
             // because it is possible to switch between months pretty quickly

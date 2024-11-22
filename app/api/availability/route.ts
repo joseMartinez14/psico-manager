@@ -1,4 +1,5 @@
 import api from "@/app/config";
+import { cookies } from "next/headers";
 
 export async function POST() {
   const data = {
@@ -7,13 +8,6 @@ export async function POST() {
       AvailabilityStatus: "Available", // Replace with your desired AvailabilityStatus
     },
   };
-
-  //   const res = await api.post("availabilities", {
-  //     data: {
-  //       DateTime: "2024-10-10T15:00:00Z",
-  //       AvailabilityStatus: "Available",
-  //     },
-  //   });
 
   console.log("---------");
   console.log(JSON.stringify(data));
@@ -27,6 +21,32 @@ export async function POST() {
   //console.log(res);
 
   return Response.json({});
+}
+
+export async function DELETE(req: Request) {
+  const cookieStore = await cookies();
+
+  const { searchParams } = new URL(req.url);
+  const avail_id = searchParams.get("ID");
+
+  const token = cookieStore.get("psicoStrapiToken");
+  if (!token) {
+    return Response.json({ error: "User not logged in" }, { status: 403 });
+  }
+
+  const strapi_res = await api.delete(`availabilities/${avail_id}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (strapi_res.status == 204) {
+    return Response.json({ error: "Se borro exitosamente" }, { status: 204 });
+  }
+  return Response.json(
+    { error: "Error al eliminar la disponibilidad" },
+    { status: 500 }
+  );
 }
 
 // import { NextRequest, NextResponse } from "next/server";

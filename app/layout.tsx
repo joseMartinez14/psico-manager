@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Pinyon_Script, Alex_Brush } from '@next/font/google';
-
-const pinyonScript = Pinyon_Script({
-  subsets: ['latin'],
-  weight: "400"
-});
-
-const alex_brush = Alex_Brush({ subsets: ['latin'], weight: "400" })
 
 export const metadata = {
   title: "Create Next App",
@@ -22,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${alex_brush.className}`} >
+      <body >
 
         {children}</body>
     </html>

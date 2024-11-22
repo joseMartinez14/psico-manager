@@ -8,7 +8,7 @@ import DropdownSelect from '../components/DropdownSelect';
 import HourSelectItem from '../components/HourSelectItem';
 import HourSelect from '../components/HourSelect';
 import { useForm } from 'react-hook-form';
-import { SetAppoitmentForm } from './type';
+import { SetAppoitmentForm } from '../(client)/cita/type';
 import { Box, Button } from '@mui/material';
 import { DayHourAvailabilityItem } from '@/utils/Types';
 import Calendar from '../components/Calendar';
@@ -20,55 +20,20 @@ const callApi = async () => {
 
     const avail = await res.json()
 
-    console.log("*****")
-    console.log(avail)
+}
+
+const fetchData = async () => {
+    //const availData = await fetch("http://localhost:3000/api/availability/month?month=09&year=2024", { cache: 'no-store' });
+    const availData = await fetch("http://localhost:3000/api/availability/month", { cache: 'no-store' });
+
+    const availItems = await availData.json()
+
+    return availItems;
 }
 
 export default async function BasicDateCalendar() {
 
-    // const {
-    //     control,
-    //     handleSubmit,
-    //     formState: { errors },
-    // } = useForm<SetAppoitmentForm>();
-
-    // const onSubmit = (data: SetAppoitmentForm) => {
-    //     console.log("*****")
-    //     console.log(data)
-    // }
-
-    const fetchData = async () => {
-        const availData = await fetch("http://localhost:3000/api/availability/month?month=09&year=2024");
-        console.log("-**-*-*-")
-        console.log(availData)
-        const availItems = await availData.json()
-        console.log(availItems)
-
-        return availItems;
-    }
-
     const monthAvailData = await fetchData();
-
-    // const availData = fetch()
-
-    const testData: DayHourAvailabilityItem[] = [
-        {
-            hour: "8:00 am",
-            state: "selected"
-        },
-        {
-            hour: "9:00 am",
-            state: "unavailable"
-        },
-        {
-            hour: "10:00 am",
-            state: "available"
-        },
-        {
-            hour: "11:00 am",
-            state: "selected"
-        },
-    ]
 
     return (
         <div style={{ backgroundColor: 'white' }}>
@@ -76,7 +41,7 @@ export default async function BasicDateCalendar() {
             <DropdownSelect />
             <br />
             <br />
-            <Calendar datesstate={monthAvailData} isLoading={false} />
+            {/* <Calendar datesstate={monthAvailData} isLoading={false} /> */}
 
             <br />
             {/* <Box

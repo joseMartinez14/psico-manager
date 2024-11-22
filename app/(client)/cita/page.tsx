@@ -1,25 +1,46 @@
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { useEffect } from 'react';
-import { Suspense } from 'react';
+import "@fontsource/montserrat-alternates/400.css"
 
-import DateCalendarServerRequest from '@/app/components/CalendarExample';
-import CompoExample from '@/app/components/CompoExample';
+import CitaFormComponent from './FormComponents';
+import { Box, Typography } from '@mui/material';
 
-/*
-const callApi = async () => {
-    const res = await fetch(
-        'http://localhost:1337/api/availabilities',
-    )
 
-    const avail = await res.json()
-
-    console.log("*****")
-    console.log(avail)
+interface QueryParams {
+    month?: string;
+    year?: string;
+    day?: string;
 }
-*/
-export default async function appointmentPage() {
+
+const getMonthAvailability = async (month: string | null | undefined, year: string | null | undefined) => {
+    let url = ""
+    if (month && year) {
+        url = `${process.env.MY_API_URL}/availability/month?month=${month}&year=${year}`
+    } else {
+        url = `${process.env.MY_API_URL}/availability/month`
+    }
+    const res = await fetch(url, { cache: 'no-store' })
+    const avail = await res.json()
+    return avail;
+}
+
+const getBasicGet = async (relative_path: string) => {
+    const res = await fetch(`${process.env.MY_API_URL}/${relative_path}`)
+    const avail = await res.json()
+    return avail;
+}
+
+const getDayAvailability = async (month: string | null | undefined, year: string | null | undefined, day: string | null | undefined) => {
+    let url = ""
+    if (month && year && day) {
+        url = `${process.env.MY_API_URL}/availability/day?month=${month}&year=${year}&day=${day}`
+    } else {
+        url = `${process.env.MY_API_URL}/availability/day`
+    }
+    const res = await fetch(url, { cache: 'no-store' })
+    const avail = await res.json()
+    return avail;
+}
+
+export default async function appointmentPage({ searchParams }: { searchParams: QueryParams }) {
 
     // callApi();
 
@@ -28,17 +49,58 @@ export default async function appointmentPage() {
     //1.2 pedir los datos del dia especifico basado en los parametros del url
     //2. Mandarlos como props a los componentes 
 
+    //const searchParams = useSearchParams();
+    const { month, year, day } = searchParams;
+
+
+    const monthAvailability = await getMonthAvailability(month, year);
+    const dayAvailability = await getDayAvailability(month, year, day);
+    const appointmentTypes = await getBasicGet("appointmenttype");
+    const appointmentModes = await getBasicGet("mode");
 
 
 
 
     return (
         <>
-            <div style={{ backgroundColor: 'white' }}>
-            </div>
+            <Box
+                sx={{
+                    width: {
+                        xs: '96%',
+                        sm: '90%',
+                        md: '70%',
+                        lg: '65%',
+                        xl: '60%'
+                    },
+                    maxWidth: '1200px',
+                    margin: '0 auto',
+                    padding: '20px',
+                }}
+            >
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    pb: 4
+                }}>
+                    <Typography
+                        variant='h2'
+                        sx={{
+                            fontSize: 36,
+                            textAlign: 'center',
+                            verticalAlign: 'center',
+                            fontFamily: ["Montserrat Alternates"].join(","),
+                            fontStyle: "cursive",
+                            margin: 0,
+                            padding: 0,
+                            fontWeight: 300,
+                        }}>
+                        {"Reserva tu cita"}
+                    </Typography>
 
-
-
+                </Box>
+                <CitaFormComponent appointmentModes={appointmentModes} appointmentTypes={appointmentTypes} monthAvailability={monthAvailability} dayAvailability={dayAvailability} />
+            </Box>
         </>
     );
 }

@@ -9,18 +9,17 @@ import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import { MonthAvailabilityItem } from '@/utils/Types';
+import { Box, Typography } from '@mui/material';
+import { COLORS } from '@/utils/Contants';
 
 
-function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: MonthAvailabilityItem[] }) {
-    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+function ServerDay(props: PickersDayProps<Dayjs> & { datesstate?: MonthAvailabilityItem[] }) {
+    const { datesstate, day, outsideCurrentMonth, ...other } = props;
 
     let dateColor = undefined;
-    if (highlightedDays) {
-        console.log(highlightedDays)
-        const obj = highlightedDays.find(item => item.day == day.date());
-        console.log(day.date())
+    if (datesstate) {
+        const obj = datesstate.find(item => item.day == day.date());
         if (obj) {
-            console.log("Aqui")
             if (obj.state) {
                 dateColor = '🟢'
             } else {
@@ -43,50 +42,77 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: MonthAvai
 interface CalendarProps {
     datesstate: MonthAvailabilityItem[];
     isLoading: boolean;
+    handleMonthChange: (year: number, month: number) => void;
+    handleDayChange: (year: number, month: number, day: number) => void;
+    title?: string;
 }
 
 
 export default function Calendar(props: CalendarProps) {
 
-    const { datesstate, isLoading } = props;
+    const { datesstate, isLoading, handleMonthChange, handleDayChange, title } = props;
 
     const requestAbortController = React.useRef<AbortController | null>(null);
 
     React.useEffect(() => {
-
-        console.log("---------")
-        console.log(datesstate)
-
         // abort request on unmount
         return () => requestAbortController.current?.abort();
-    }, [datesstate]);
+    }, []);
 
-    const handleMonthChange = (date: Dayjs) => {
+    const onClick = (date: Dayjs) => {
 
-        console.log("*** Se apreto el month ****")
-        if (requestAbortController.current) {
-            // make sure that you are aborting useless requests
-            // because it is possible to switch between months pretty quickly
-            requestAbortController.current.abort();
+        if (handleMonthChange) {
+            handleMonthChange(date.year(), date.month() + 1)
+        } else {
+            console.log("POrque putas esta undefined")
+        }
+    };
+
+    const onDayClick = (date: Dayjs) => {
+
+        if (handleDayChange) {
+            handleDayChange(date.year(), date.month() + 1, date.date())
+        } else {
+            console.log("POrque putas esta undefined")
         }
     };
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-                loading={isLoading}
-                onMonthChange={handleMonthChange}
-                renderLoading={() => <DayCalendarSkeleton />}
-                slots={{
-                    day: ServerDay,
-                }}
-                sx={{ color: "black" }}
-                slotProps={{
-                    day: {
-                        datesstate,
-                    } as any,
-                }}
-            />
-        </LocalizationProvider>
+        <Box>
+            {title && (
+                <Box pl={3}>
+                    <Typography
+                        variant="subtitle2"
+                        gutterBottom
+                        sx={{
+                            color: COLORS.black,
+                            fontSize: '15px',
+                            margin: 0,
+                            padding: 0,
+                            fontWeight: 500,
+                        }}>
+                        {title}
+                    </Typography>
+                </Box>
+            )}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateCalendar
+                    loading={isLoading}
+                    onMonthChange={onClick}
+                    onYearChange={onClick}
+                    onChange={onDayClick}
+                    renderLoading={() => <DayCalendarSkeleton />}
+                    slots={{
+                        day: ServerDay,
+                    }}
+                    sx={{ color: "black" }}
+                    slotProps={{
+                        day: {
+                            datesstate,
+                        } as any,
+                    }}
+                />
+            </LocalizationProvider>
+        </Box>
     );
 }
