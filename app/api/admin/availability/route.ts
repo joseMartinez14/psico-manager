@@ -50,7 +50,6 @@ export async function POST(req: Request) {
     );
 
     if (avail_res.status >= 200 && avail_res.status < 300) {
-      console.log("siii");
       returnData.push({
         date: getCRDateFromUTC(utc_date.toISOString()),
         state: true,

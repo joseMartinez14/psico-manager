@@ -124,6 +124,13 @@ const AddAvailForm = () => {
         axios.post('/api/admin/availability', struc_data, { withCredentials: true })
             .then((res) => {
                 console.log(res)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Se guardo la disponibilidad",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
 
             })
             .catch((error) => {
