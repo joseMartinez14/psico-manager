@@ -1,12 +1,12 @@
 import api from "@/app/config";
 import { formatCRUTCDate, formatUTCTimeTo12Hour } from "@/utils/DateTime";
+import { sendEmail } from "@/utils/email";
 import { AppointmentItem } from "@/utils/Types";
 import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const data = await req.json();
 
-  console.log("Received data:", data);
   const res_avail = await api.get(`availabilities/${data.appointmentHour}`);
   const availability = await res_avail.data.data;
   if (
@@ -30,13 +30,12 @@ export async function POST(req: Request) {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
         },
       }
     );
 
     if (res_create_app.status >= 200 && res_create_app.status < 300) {
-      //Update availability
-
       const update_avail_data = {
         data: {
           AvailabilityStatus: "unavailable",
@@ -51,10 +50,12 @@ export async function POST(req: Request) {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
           },
         }
       );
       if (res_avail_update.status >= 200 && res_avail_update.status < 300) {
+        await sendEmail(res_create_app.data.data.documentId);
         return Response.json({ message: "Data inserted successfully" });
       }
       return Response.json(
@@ -62,8 +63,6 @@ export async function POST(req: Request) {
         { status: 502 }
       );
     } else {
-      console.log("Putaaa");
-      console.log(res_create_app);
       return Response.json(
         { error: "Failed to save appointment" },
         { status: 501 }

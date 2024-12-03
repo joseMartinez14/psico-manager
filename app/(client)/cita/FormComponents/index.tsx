@@ -68,6 +68,9 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
     const [selectedHour, setSelectedHour] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<dateNumbers | null>(null);
 
+    const Swal = require('sweetalert2')
+
+
     const onHourSelect = (hour: string) => {
         if (selectedHour == hour) {
             setAvailableHours(deSelectHour(availableHours))
@@ -88,14 +91,22 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
     const formData = watch();
 
     const onSubmit = async (data: SetAppoitmentForm) => {
-        const res = await axios.post(`/api/appointment`, data)
-        const res_data = res.data
-        console.log("------")
-        console.log(res_data)
-
-
-        console.log(selectedHour)
-
+        const res = await axios.post(`/api/admin/appointment`, data)
+            .then(response => {
+                Swal.fire({
+                    title: "Se agendo correctamente",
+                    text: "Recibirá un correo con los detalles de la cita.",
+                    icon: "success"
+                });
+            })
+            .catch(error => {
+                console.error(error)
+                Swal.fire({
+                    title: "Error",
+                    text: "Error al agendar la cita",
+                    icon: "error"
+                });
+            })
     }
 
     function handleMonthChange(year: number, month: number) {

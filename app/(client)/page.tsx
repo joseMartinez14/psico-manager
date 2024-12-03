@@ -6,8 +6,69 @@ import HomeCards from "../components/Home/HomeCards";
 import CommentCard from "../components/Home/CommentCard";
 import { redirect } from 'next/navigation';
 import AppointmentButtom from "../components/Home/AppointmentButtom";
+import axios from "axios";
+import { comment } from "postcss";
 
-export default function Home() {
+type cardsTexts = {
+  SobreNosotros: any;
+  PortacionArmas: any;
+  Terapia: any;
+  Diagnosis: any;
+}
+
+type commentType = {
+  nombre: string;
+  comment: string;
+}
+
+
+async function getCardText(card: string): Promise<cardsTexts> {
+  try {
+    const res = await axios.get(`${process.env.STRAPI_API_URL}/${card}`)
+    const data: cardsTexts = await res.data.data;
+    return {
+      SobreNosotros: data.SobreNosotros,
+      PortacionArmas: data.PortacionArmas,
+      Terapia: data.Terapia,
+      Diagnosis: data.Diagnosis
+    };
+  } catch (error) {
+    console.error(error)
+    return {
+      SobreNosotros: "",
+      PortacionArmas: "",
+      Terapia: "",
+      Diagnosis: ""
+    };
+  }
+}
+
+async function getComments(): Promise<commentType[] | null> {
+  try {
+    const res = await axios.get(`${process.env.STRAPI_API_URL}/comments`)
+    const data = await res.data.data;
+    if (!data) {
+      return null;
+    }
+    return data.map((element: any) => {
+      return {
+        nombre: element.ClientName,
+        comment: element.Comment
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+
+
+export default async function Home() {
+
+  const card_text: cardsTexts = await getCardText("home-card")
+  const comments = await getComments();
+
   return (
     <>
       <Box
@@ -45,33 +106,37 @@ export default function Home() {
             {"Psicologa clinica"}
           </Typography>
         </Box>
-        <HomeCards />
+        <HomeCards
+          SobreNosotros={card_text.SobreNosotros}
+          PortacionArmas={card_text.PortacionArmas}
+          Terapia={card_text.Terapia}
+          Diagnosis={card_text.Diagnosis}
+        />
         <AppointmentButtom />
-        <Box width={'100%'} mt={15} sx={{ display: 'flex', flexDirection: "column" }}>
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: ["Montserrat Alternates"].join(","),
-              fontSize: '25px',
-              fontWeight: '500',
-            }}>
-            {"Comentarios"}
-          </Typography>
+        {comments &&
+          <Box width={'100%'} mt={15} sx={{ display: 'flex', flexDirection: "column" }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: ["Montserrat Alternates"].join(","),
+                fontSize: '25px',
+                fontWeight: '500',
+              }}>
+              {"Comentarios"}
+            </Typography>
 
-          <Grid2 container spacing={1}>
-
-            <Grid2 mt={4} >
-              <CommentCard clientName="Fake client name" commentText="Some comment muy bonito trato y bla bla bla Some comment muy bonito trato y bla bla bla Some comment muy bonito trato y bla bla bla Some comment muy bonito trato y bla bla bla" borderColor="#FA7899" />
+            <Grid2 container spacing={1}>
+              {comments.map(comment => (
+                <Grid2 mt={4} key={comment.nombre}>
+                  <CommentCard clientName={comment.nombre} commentText={comment.comment} borderColor="#FA7899" />
+                </Grid2>
+              ))}
             </Grid2>
-
-          </Grid2>
-
-        </Box>
+          </Box>
+        }
 
       </Box >
     </>
 
   );
 }
-
-//2e939d

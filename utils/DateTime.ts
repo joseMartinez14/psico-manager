@@ -12,6 +12,7 @@ const parseTime = (timeStr: string) => {
   return { hours, minutes };
 };
 
+//Recive la hora de costa rica y manda la de UTC
 export const getCostaRicaToUTCTime = (
   year: number,
   month: number,
@@ -22,6 +23,7 @@ export const getCostaRicaToUTCTime = (
   return new Date(Date.UTC(year, month - 1, day, hours + 6, minutes));
 };
 
+//Este recibe la de utc y manda la de costa rica
 export const getCRdayFromUTC = (isoString: string): number => {
   const dateObject = new Date(isoString);
   dateObject.setHours(dateObject.getHours() - 6);
@@ -34,6 +36,7 @@ export const getCRDateFromUTC = (isoString: string): string => {
   return dateObject.toISOString();
 };
 
+//Mando UTC full string y recibo la fecha dia/mes/ano de costa rica
 export function formatCRUTCDate(dateString: string): string {
   const date = new Date(dateString);
   date.setHours(date.getHours() - 6);
@@ -48,6 +51,7 @@ export function formatCRUTCDate(dateString: string): string {
   return `${day} ${month} ${year}`;
 }
 
+//Mando UTC full string y recibo la hora de costa rica
 export function formatUTCTimeTo12Hour(time: string): string {
   const date = new Date(time);
   date.setHours(date.getHours() - 6);

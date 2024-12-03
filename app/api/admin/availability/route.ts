@@ -93,8 +93,13 @@ export async function DELETE(req: Request) {
     },
   });
 
+  console.log("**** Strapi response *****");
+  console.log(strapi_res);
+  console.log("++++");
+  console.log(strapi_res.status);
+
   if (strapi_res.status == 204) {
-    return Response.json({ error: "Se borro exitosamente" }, { status: 204 });
+    return Response.json({ message: "Se borro exitosamente" });
   }
   return Response.json(
     { error: "Error al eliminar la disponibilidad" },

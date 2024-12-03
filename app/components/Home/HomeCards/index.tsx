@@ -6,6 +6,10 @@ import CardGridItem from '../CardGridItem'
 import { tree } from 'next/dist/build/templates/app-page'
 
 interface HomeCardsProps {
+    SobreNosotros: any;
+    PortacionArmas: any;
+    Terapia: any;
+    Diagnosis: any;
 }
 
 function wait(n: number): Promise<void> {
@@ -32,7 +36,7 @@ const HomeCards = (props: HomeCardsProps) => {
         }
     }, [textPop])
 
-    const { } = props;
+    const { SobreNosotros, PortacionArmas, Terapia, Diagnosis } = props;
 
     const setTextPopNull = async () => {
         await wait(animation_time);
@@ -126,14 +130,10 @@ const HomeCards = (props: HomeCardsProps) => {
                 }
             </Collapse>
             <Grid2 rowSpacing={2} width={'100%'} justifyContent="space-evenly" alignItems="center" container>
-
-
-                <CardGridItem onCardClick={onCardClick} text="Sobre nosotros" textColor="#2D939D" borderColor="#2D939D" longText=' Sobre nosotros Sobre <br /> nosotros Sobre nosotros Sobre nosotros \n Sobre nosotros Sobre nosotros ' />
-                <CardGridItem onCardClick={onCardClick} text="Dictamen para portación de armas" textColor="#D49FD8" borderColor="#D49FD8" longText='2 texto 2 texto 2 texto 2 texto 2 texto 2 texto 2 texto 2 texto ' />
-                <CardGridItem onCardClick={onCardClick} text="Terapia psicológica" textColor="#F88069" borderColor="#F88069" longText='3 text 3 text 3 text 3 text 3 text 3 text 3 text 3 text 3 text 3 text ' />
-                <CardGridItem onCardClick={onCardClick} text="Psico-diagnósticos" textColor="#BB8112" borderColor="#BB8112" longText='4 text 4 text 4 text 4 text 4 text 4 text 4 text 4 text 4 text 4 text ' />
-
-
+                <CardGridItem onCardClick={onCardClick} text="Sobre nosotros" textColor="#2D939D" borderColor="#2D939D" longText={SobreNosotros} />
+                <CardGridItem onCardClick={onCardClick} text="Dictamen para portación de armas" textColor="#D49FD8" borderColor="#D49FD8" longText={PortacionArmas} />
+                <CardGridItem onCardClick={onCardClick} text="Terapia psicológica" textColor="#F88069" borderColor="#F88069" longText={Terapia} />
+                <CardGridItem onCardClick={onCardClick} text="Psico-diagnósticos" textColor="#BB8112" borderColor="#BB8112" longText={Diagnosis} />
             </Grid2>
         </>
     )
