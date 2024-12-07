@@ -2,7 +2,6 @@
 import Calendar from '@/app/components/Calendar';
 import { AppointmentAttributeItem, DayAvailabilityItem, DayHourAvailabilityItem, MonthAvailabilityItem } from '@/utils/Types';
 import { Box, Button, Divider, Grid2, Typography } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -14,7 +13,7 @@ import "@fontsource/montserrat-alternates";
 import TextInput from '@/app/components/TextInput';
 import { COLORS } from '@/utils/Contants';
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 
 function formatDate(day: number, month: number, year: number): string {
     const months = [
@@ -68,9 +67,6 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
     const [selectedHour, setSelectedHour] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<dateNumbers | null>(null);
 
-    const Swal = require('sweetalert2')
-
-
     const onHourSelect = (hour: string) => {
         if (selectedHour == hour) {
             setAvailableHours(deSelectHour(availableHours))
@@ -91,13 +87,15 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
     const formData = watch();
 
     const onSubmit = async (data: SetAppoitmentForm) => {
-        const res = await axios.post(`/api/admin/appointment`, data)
+        await axios.post(`/api/admin/appointment`, data)
             .then(response => {
-                Swal.fire({
-                    title: "Se agendo correctamente",
-                    text: "Recibirá un correo con los detalles de la cita.",
-                    icon: "success"
-                });
+                if (response) {
+                    Swal.fire({
+                        title: "Se agendo correctamente",
+                        text: "Recibirá un correo con los detalles de la cita.",
+                        icon: "success"
+                    });
+                }
             })
             .catch(error => {
                 console.error(error)

@@ -1,10 +1,5 @@
 import api from "@/app/config";
-import {
-  getCostaRicaToUTCTime,
-  getCRDateFromUTC,
-  getCRdayFromUTC,
-} from "@/utils/DateTime";
-import { ConnectWithoutContact } from "@mui/icons-material";
+import { getCostaRicaToUTCTime, getCRDateFromUTC } from "@/utils/DateTime";
 import { cookies } from "next/headers";
 
 interface addAvailabilityReturn {
@@ -23,7 +18,7 @@ export async function POST(req: Request) {
 
   const returnData: addAvailabilityReturn[] = [];
 
-  for (let item of data) {
+  for (const item of data) {
     const utc_date = getCostaRicaToUTCTime(
       item.year,
       item.month,
@@ -69,11 +64,6 @@ export async function POST(req: Request) {
   return Response.json(returnData);
 }
 
-export async function GET(req: Request) {
-  console.log("Putaaaaaaa");
-  return Response.json({ mierda: "puta" });
-}
-
 export async function DELETE(req: Request) {
   const cookieStore = await cookies();
 
@@ -92,11 +82,6 @@ export async function DELETE(req: Request) {
       Authorization: `Bearer ${token.value}`,
     },
   });
-
-  console.log("**** Strapi response *****");
-  console.log(strapi_res);
-  console.log("++++");
-  console.log(strapi_res.status);
 
   if (strapi_res.status == 204) {
     return Response.json({ message: "Se borro exitosamente" });

@@ -4,9 +4,11 @@ export async function GET() {
   try {
     const res = await api.get("modes");
     const data = res.data.data;
-    const data_structured = data.map((app: any) => {
-      return { value: app.Mode, id: app.documentId };
-    });
+    const data_structured = data.map(
+      (app: { Mode: string; documentId: string }) => {
+        return { value: app.Mode, id: app.documentId };
+      }
+    );
 
     return Response.json(data_structured);
   } catch (error) {

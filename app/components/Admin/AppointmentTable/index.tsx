@@ -8,7 +8,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import { AppointmentItem } from '@/utils/Types';
 import axios from 'axios';
@@ -42,7 +41,7 @@ const AppointmentTable = () => {
 
     const getAppointments = async () => {
         try {
-            let url = `api/admin/appointment`
+            const url = `api/admin/appointment`
             const res = await axios.get<AppointmentItem[]>(url, { withCredentials: true })
             const data = res.data
             console.log("aquiii")

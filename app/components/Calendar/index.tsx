@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import Badge from '@mui/material/Badge';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -46,8 +46,7 @@ interface CalendarProps {
     handleDayChange: (year: number, month: number, day: number) => void;
     title?: string;
 }
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default function Calendar(props: CalendarProps) {
 
     const { datesstate, isLoading, handleMonthChange, handleDayChange, title } = props;
@@ -116,3 +115,5 @@ export default function Calendar(props: CalendarProps) {
         </Box>
     );
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */

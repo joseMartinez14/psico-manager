@@ -5,9 +5,11 @@ export async function GET() {
     const res = await api.get("appointment-types");
     const data = res.data.data;
 
-    const data_structured = data.map((app: any) => {
-      return { value: app.AppointmentType, id: app.documentId };
-    });
+    const data_structured = data.map(
+      (app: { AppointmentType: string; documentId: string }) => {
+        return { value: app.AppointmentType, id: app.documentId };
+      }
+    );
 
     return Response.json(data_structured);
   } catch (error) {

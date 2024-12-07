@@ -1,8 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import AppointmentTable from '../components/Admin/AppointmentTable'
-import axios from 'axios'
-import { redirect } from 'next/navigation'
 
 
 

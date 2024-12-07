@@ -3,11 +3,13 @@ import { Box, TextField, Typography } from '@mui/material';
 import { COLORS } from '../../../utils/Contants';
 
 interface TextInputProps {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     control: any;
     title?: string;
     value: string;
     error?: string;
     placeholder?: string;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     styles?: any;
     isRequired: boolean;
     multiline?: boolean;

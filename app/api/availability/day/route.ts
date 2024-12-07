@@ -1,5 +1,5 @@
 import api from "@/app/config";
-import { formatUTCTimeTo12Hour, getCRdayFromUTC } from "@/utils/DateTime";
+import { formatUTCTimeTo12Hour } from "@/utils/DateTime";
 
 export async function GET(request: Request) {
   try {
@@ -28,19 +28,32 @@ export async function GET(request: Request) {
 
     const data = await res.data.data;
 
-    const structure_data: any = [];
+    const structure_data: {
+      state: boolean;
+      month: string;
+      year: string;
+      day: string;
+      hour: string;
+      document_id: string;
+    }[] = [];
 
-    data.forEach((element: any) => {
-      const hour = formatUTCTimeTo12Hour(element.Datetime);
-      structure_data.push({
-        state: getBoolState(element.AvailabilityStatus),
-        month: month,
-        year: year,
-        day: day,
-        hour: hour,
-        document_id: element.documentId,
-      });
-    });
+    data.forEach(
+      (element: {
+        Datetime: string;
+        AvailabilityStatus: string;
+        documentId: string;
+      }) => {
+        const hour = formatUTCTimeTo12Hour(element.Datetime);
+        structure_data.push({
+          state: getBoolState(element.AvailabilityStatus),
+          month: month,
+          year: year,
+          day: day,
+          hour: hour,
+          document_id: element.documentId,
+        });
+      }
+    );
 
     return Response.json(structure_data);
   } catch (error) {

@@ -27,17 +27,19 @@ export async function GET(request: Request) {
 
     const hashStructure = new Map<number, string>();
 
-    data.forEach((element: any) => {
-      const day = getCRdayFromUTC(element.Datetime);
-      if (hashStructure.has(day)) {
-        if (element.AvailabilityStatus == "Available")
-          hashStructure.set(day, "Available");
-      } else {
-        hashStructure.set(day, element.AvailabilityStatus);
+    data.forEach(
+      (element: { Datetime: string; AvailabilityStatus: string }) => {
+        const day = getCRdayFromUTC(element.Datetime);
+        if (hashStructure.has(day)) {
+          if (element.AvailabilityStatus == "Available")
+            hashStructure.set(day, "Available");
+        } else {
+          hashStructure.set(day, element.AvailabilityStatus);
+        }
       }
-    });
+    );
 
-    const structure_data: any = [];
+    const structure_data: { day: number; state: boolean; month: string }[] = [];
 
     hashStructure.forEach((value, key) => {
       structure_data.push({

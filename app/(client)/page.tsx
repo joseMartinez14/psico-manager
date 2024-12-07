@@ -1,19 +1,15 @@
-import Image from "next/image";
-import HomeCard from "../components/Home/HomeCard";
 import { Box, Grid2, Typography } from "@mui/material";
 import "@fontsource/montserrat-alternates/400.css"
 import HomeCards from "../components/Home/HomeCards";
 import CommentCard from "../components/Home/CommentCard";
-import { redirect } from 'next/navigation';
 import AppointmentButtom from "../components/Home/AppointmentButtom";
 import axios from "axios";
-import { comment } from "postcss";
 
 type cardsTexts = {
-  SobreNosotros: any;
-  PortacionArmas: any;
-  Terapia: any;
-  Diagnosis: any;
+  SobreNosotros: string;
+  PortacionArmas: string;
+  Terapia: string;
+  Diagnosis: string;
 }
 
 type commentType = {
@@ -50,7 +46,7 @@ async function getComments(): Promise<commentType[] | null> {
     if (!data) {
       return null;
     }
-    return data.map((element: any) => {
+    return data.map((element: { ClientName: string; Comment: string; }) => {
       return {
         nombre: element.ClientName,
         comment: element.Comment

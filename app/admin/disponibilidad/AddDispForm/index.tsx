@@ -1,13 +1,12 @@
 'use client'
 import Calendar from '@/app/components/Calendar';
-import HourSelect from '@/app/components/HourSelect';
 import HourSelectItem from '@/app/components/HourSelectItem';
 import { COLORS } from '@/utils/Contants';
 import { DayHourAvailabilityItem } from '@/utils/Types';
 import { Box, Button, Grid2, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react'
-import { json } from 'stream/consumers';
+import Swal from 'sweetalert2';
 
 const dayAvailability: DayHourAvailabilityItem[] = Array.from({ length: 24 }, (_, i) => {
     const hour12 = i % 12 === 0 ? 12 : i % 12;
@@ -64,8 +63,6 @@ interface AvailableDataStruc {
 const AddAvailForm = () => {
     const [availableHours, setAvailableHours] = useState<DayHourAvailabilityItem[]>(dayAvailability);
     const [selectedDates, setSelectedDates] = useState<DayHourAvailabilityItem[]>([]);
-    const Swal = require('sweetalert2')
-
 
     function handleDayChange(year: number, month: number, day: number) {
         console.log(day, month, year)
@@ -173,7 +170,7 @@ const AddAvailForm = () => {
                         </Box>
                         <Grid2 container spacing={2} >
                             {availableHours.map((item) => (
-                                <Grid2 >
+                                <Grid2 key={item.document_id}>
                                     <HourSelectItem onSelect={() => { }} onChange={onHourClick} id={item.document_id} hourValue={item.hour} width={80} height={30} state={item.state} fontSize={16} />
                                 </Grid2>
                             ))}
@@ -192,7 +189,7 @@ const AddAvailForm = () => {
                         </Box>
                         <Grid2 container spacing={2} >
                             {selectedDates.map((item) => (
-                                <Grid2 >
+                                <Grid2 key={item.document_id} >
                                     <HourSelectItem onSelect={() => { }} onChange={onHourClick} id={item.document_id} hourValue={item.hour} width={180} height={30} state={item.state} fontSize={16} onCancel={handleDateCancel} />
                                 </Grid2>
                             ))}

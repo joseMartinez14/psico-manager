@@ -1,15 +1,13 @@
 'use client'
 import { Box, Collapse, Grid2, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import HomeCard from '../HomeCard'
 import CardGridItem from '../CardGridItem'
-import { tree } from 'next/dist/build/templates/app-page'
 
 interface HomeCardsProps {
-    SobreNosotros: any;
-    PortacionArmas: any;
-    Terapia: any;
-    Diagnosis: any;
+    SobreNosotros: string;
+    PortacionArmas: string;
+    Terapia: string;
+    Diagnosis: string;
 }
 
 function wait(n: number): Promise<void> {
@@ -109,6 +107,7 @@ const HomeCards = (props: HomeCardsProps) => {
 
                             {textLines.map(text => (
                                 <Typography
+                                    key={text}
                                     variant="body1"
                                     component={"pre"}
                                     style={{ wordWrap: "break-word" }}

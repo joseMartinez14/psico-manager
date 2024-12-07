@@ -13,6 +13,7 @@ interface HourSelectItemProps {
     height: number;
     state: "selected" | "unavailable" | "available";
     fontSize: number;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     onChange: (...event: any[]) => void;
     onSelect: (hourValue: string) => void;
     onCancel?: (hourValue: string) => void;

@@ -4,6 +4,16 @@ import { sendEmail } from "@/utils/email";
 import { AppointmentItem } from "@/utils/Types";
 import { cookies } from "next/headers";
 
+interface appointmentStrapi {
+  document_id: string;
+  email: string;
+  clientName: string;
+  phone: string;
+  appointment_type: { AppointmentType: string };
+  mode: { Mode: string };
+  availability: { Datetime: string; Duration: string };
+}
+
 export async function POST(req: Request) {
   const data = await req.json();
 
@@ -76,7 +86,7 @@ export async function POST(req: Request) {
   );
 }
 
-export async function GET(req: Request) {
+export async function GET() {
   const cookieStore = await cookies();
 
   const token = cookieStore.get("psicoStrapiToken");
@@ -95,7 +105,7 @@ export async function GET(req: Request) {
 
   const data = strapi_res.data.data;
 
-  const struct_data: AppointmentItem[] = data.map((app: any) => {
+  const struct_data: AppointmentItem[] = data.map((app: appointmentStrapi) => {
     return {
       id: app.document_id,
       clientEmail: app.email,

@@ -7,6 +7,8 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
+
 interface LoginFormValues {
     email: string;
     password: string;
@@ -18,7 +20,6 @@ export default function LoginPage() {
         password: '',
     });
 
-    const Swal = require('sweetalert2')
     const router = useRouter()
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({

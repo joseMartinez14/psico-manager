@@ -6,7 +6,7 @@ interface DataStructure {
   value: string;
   id: string;
 }
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface DropdownInputProps {
   control: any;
   title?: string;
@@ -19,6 +19,7 @@ interface DropdownInputProps {
   isRequired: boolean;
   icon?: any;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 const DropdownInput = (props: DropdownInputProps) => {
   const { control, title, value, error, isRequired, placeholder, styles, data, selectStyles, icon } = props;

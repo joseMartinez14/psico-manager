@@ -19,6 +19,7 @@ export async function POST(req: Request) {
 
     return Response.json({ Message: "Login succesfull" });
   } catch (error) {
+    console.error(error);
     return Response.json({ error: "Wrong credentials" }, { status: 401 });
   }
 }

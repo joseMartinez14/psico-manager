@@ -78,10 +78,7 @@ const CalendarAvailabilityFormComponent = (props: CalendarAvailabilityFormCompon
         control,
         handleSubmit,
         formState: { errors },
-        watch
     } = useForm<DeleteAvailabilityForm>();
-
-    const formData = watch();
 
     const onSubmit = async (data: DeleteAvailabilityForm) => {
         //axios.delete(`${process.env.NEXT_PUBLIC_MY_API_URL}/admin/availability?ID=${data.availability_id}`, { withCredentials: true })
@@ -89,7 +86,7 @@ const CalendarAvailabilityFormComponent = (props: CalendarAvailabilityFormCompon
         console.log("URL: ", url)
         axios.delete(url, { withCredentials: true })
             .then((data) => {
-                console.log("Si se elimino bien la disponibilidad");
+                console.log("Si se elimino bien la disponibilidad ", data);
                 router.refresh();
             })
             .catch((error) => {
