@@ -1,4 +1,4 @@
-import api from "@/app/config";
+import { prisma } from "@/prisma/config";
 import { formatUTCTimeTo12Hour } from "@/utils/DateTime";
 
 export async function GET(request: Request) {
@@ -22,11 +22,15 @@ export async function GET(request: Request) {
     const endDate = new Date(
       Date.UTC(Number(year), Number(month) - 1, Number(day) + 1, 0 + 6, 0)
     ).toISOString();
-    const res = await api.get(
-      `availabilities?filters[Datetime][$gte]=${startDate}&filters[Datetime][$lt]=${endDate}`
-    );
 
-    const data = await res.data.data;
+    const data = await prisma.availability.findMany({
+      where: {
+        datetime: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+    });
 
     const structure_data: {
       state: boolean;
@@ -37,23 +41,17 @@ export async function GET(request: Request) {
       document_id: string;
     }[] = [];
 
-    data.forEach(
-      (element: {
-        Datetime: string;
-        AvailabilityStatus: string;
-        documentId: string;
-      }) => {
-        const hour = formatUTCTimeTo12Hour(element.Datetime);
-        structure_data.push({
-          state: getBoolState(element.AvailabilityStatus),
-          month: month,
-          year: year,
-          day: day,
-          hour: hour,
-          document_id: element.documentId,
-        });
-      }
-    );
+    data.forEach((element) => {
+      const hour = formatUTCTimeTo12Hour(element.datetime.toISOString());
+      structure_data.push({
+        state: getBoolState(element.status),
+        month: month,
+        year: year,
+        day: day,
+        hour: hour,
+        document_id: element.id.toString(),
+      });
+    });
 
     return Response.json(structure_data);
   } catch (error) {

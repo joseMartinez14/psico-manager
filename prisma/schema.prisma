@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Uses connection pooling
+  url       = env("POSTGRES_PRISMA_URL")
+  // Uses direct connection, ⚠️ make sure to keep this to `POSTGRES_URL_NON_POOLING`
+  // or you'll have dangling databases from migrations
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Mode {
+  id   Int    @id @default(autoincrement())
+  mode String
+
+  appointments Appointment[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  comment String
+}
+
+model AppointmentType {
+  id   Int    @id @default(autoincrement())
+  type String
+
+  appointments Appointment[]
+}
+
+model Availability {
+  id          Int          @id @default(autoincrement())
+  datetime    DateTime
+  status      String
+  duration    Int
+  appointment Appointment?
+}
+
+model Appointment {
+  id         Int    @id @default(autoincrement())
+  email      String
+  phone      String
+  clientName String
+
+  availability      Availability    @relation(fields: [availabilityId], references: [id])
+  availabilityId    Int             @unique
+  mode              Mode            @relation(fields: [modeId], references: [id])
+  modeId            Int             @unique
+  appointmentType   AppointmentType @relation(fields: [appointmentTypeId], references: [id])
+  appointmentTypeId Int             @unique
+}

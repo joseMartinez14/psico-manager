@@ -1,7 +1,6 @@
-import { Box, Grid2, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import "@fontsource/montserrat-alternates/400.css"
 import HomeCards from "../components/Home/HomeCards";
-import CommentCard from "../components/Home/CommentCard";
 import AppointmentButtom from "../components/Home/AppointmentButtom";
 import axios from "axios";
 
@@ -12,10 +11,10 @@ type cardsTexts = {
   Diagnosis: string;
 }
 
-type commentType = {
-  nombre: string;
-  comment: string;
-}
+// type commentType = {
+//   nombre: string;
+//   comment: string;
+// }
 
 
 async function getCardText(card: string): Promise<cardsTexts> {
@@ -39,31 +38,31 @@ async function getCardText(card: string): Promise<cardsTexts> {
   }
 }
 
-async function getComments(): Promise<commentType[] | null> {
-  try {
-    const res = await axios.get(`${process.env.STRAPI_API_URL}/comments`)
-    const data = await res.data.data;
-    if (!data) {
-      return null;
-    }
-    return data.map((element: { ClientName: string; Comment: string; }) => {
-      return {
-        nombre: element.ClientName,
-        comment: element.Comment
-      }
-    })
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
+// async function getComments(): Promise<commentType[] | null> {
+//   try {
+//     const res = await axios.get(`${process.env.STRAPI_API_URL}/comments`)
+//     const data = await res.data.data;
+//     if (!data) {
+//       return null;
+//     }
+//     return data.map((element: { ClientName: string; Comment: string; }) => {
+//       return {
+//         nombre: element.ClientName,
+//         comment: element.Comment
+//       }
+//     })
+//   } catch (error) {
+//     console.error(error)
+//     return null
+//   }
+// }
 
 
 
 export default async function Home() {
 
   const card_text: cardsTexts = await getCardText("home-card")
-  const comments = await getComments();
+  // const comments = await getComments();
 
   return (
     <>
@@ -109,7 +108,8 @@ export default async function Home() {
           Diagnosis={card_text.Diagnosis}
         />
         <AppointmentButtom />
-        {comments &&
+        {/* Se deshabilitan los comentarios porque no hay una forma facil de ponerlos */}
+        {/* {comments &&
           <Box width={'100%'} mt={15} sx={{ display: 'flex', flexDirection: "column" }}>
             <Typography
               variant="h2"
@@ -129,7 +129,7 @@ export default async function Home() {
               ))}
             </Grid2>
           </Box>
-        }
+        } */}
 
       </Box >
     </>

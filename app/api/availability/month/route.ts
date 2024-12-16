@@ -1,4 +1,4 @@
-import api from "@/app/config";
+import { prisma } from "@/prisma/config";
 import { getCRdayFromUTC } from "@/utils/DateTime";
 
 export async function GET(request: Request) {
@@ -19,25 +19,26 @@ export async function GET(request: Request) {
     const endDate = new Date(
       Date.UTC(Number(year), Number(month), 1, 0 + 6, 0)
     ).toISOString();
-    const res = await api.get(
-      `availabilities?filters[Datetime][$gte]=${startDate}&filters[Datetime][$lt]=${endDate}&pagination[pageSize]=240`
-    );
 
-    const data = await res.data.data;
+    const data = await prisma.availability.findMany({
+      where: {
+        datetime: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+    });
 
     const hashStructure = new Map<number, string>();
 
-    data.forEach(
-      (element: { Datetime: string; AvailabilityStatus: string }) => {
-        const day = getCRdayFromUTC(element.Datetime);
-        if (hashStructure.has(day)) {
-          if (element.AvailabilityStatus == "Available")
-            hashStructure.set(day, "Available");
-        } else {
-          hashStructure.set(day, element.AvailabilityStatus);
-        }
+    data.forEach((element) => {
+      const day = getCRdayFromUTC(element.datetime.toISOString());
+      if (hashStructure.has(day)) {
+        if (element.status == "Available") hashStructure.set(day, "Available");
+      } else {
+        hashStructure.set(day, element.status);
       }
-    );
+    });
 
     const structure_data: { day: number; state: boolean; month: string }[] = [];
 

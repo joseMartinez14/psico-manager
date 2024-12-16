@@ -1,5 +1,6 @@
-import api from "@/app/config";
+import { prisma } from "@/prisma/config";
 import { getCostaRicaToUTCTime, getCRDateFromUTC } from "@/utils/DateTime";
+import { isAuthenticated } from "@/utils/email/auth";
 import { cookies } from "next/headers";
 
 interface addAvailabilityReturn {
@@ -12,8 +13,17 @@ export async function POST(req: Request) {
 
   const token = cookieStore.get("psicoStrapiToken");
   if (!token) {
-    return Response.json({ error: "User not logged in" }, { status: 403 });
+    return Response.json(
+      { error: "User not logged in. No token provided" },
+      { status: 403 }
+    );
   }
+  const isAuth = await isAuthenticated(token.value);
+
+  if (!isAuth) {
+    return Response.json({ error: "User not logged" }, { status: 403 });
+  }
+
   const data = await req.json();
 
   const returnData: addAvailabilityReturn[] = [];
@@ -25,40 +35,21 @@ export async function POST(req: Request) {
       item.day,
       item.hour
     );
-    const new_avail_data = {
+
+    const new_avail_data = await prisma.availability.create({
       data: {
-        AvailabilityStatus: "Available",
-        Duration: item.duration,
-        Datetime: utc_date,
+        datetime: utc_date,
+        status: "Available",
+        duration: item.duration,
       },
-    };
+    });
 
-    const avail_res = await api.post(
-      "availabilities",
-      JSON.stringify(new_avail_data),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token.value}`,
-        },
-      }
-    );
+    console.log(new_avail_data);
 
-    if (avail_res.status >= 200 && avail_res.status < 300) {
-      returnData.push({
-        date: getCRDateFromUTC(utc_date.toISOString()),
-        state: true,
-      });
-    } else {
-      if (avail_res.status >= 400 && avail_res.status < 500) {
-        console.log("Putaaaaa");
-        return Response.json({ error: "User not logged in" }, { status: 403 });
-      }
-      returnData.push({
-        date: getCRDateFromUTC(utc_date.toISOString()),
-        state: false,
-      });
-    }
+    returnData.push({
+      date: getCRDateFromUTC(utc_date.toISOString()),
+      state: true,
+    });
   }
 
   return Response.json(returnData);
@@ -67,27 +58,25 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   const cookieStore = await cookies();
 
+  const token = cookieStore.get("psicoStrapiToken");
+  if (!token) {
+    return Response.json(
+      { error: "User not logged in. No token provided" },
+      { status: 403 }
+    );
+  }
+  const isAuth = await isAuthenticated(token.value);
+
+  if (!isAuth) {
+    return Response.json({ error: "User not logged" }, { status: 403 });
+  }
+
   const { searchParams } = new URL(req.url);
   const avail_id = searchParams.get("ID");
 
-  const token = cookieStore.get("psicoStrapiToken");
-  console.log(token);
-  if (!token) {
-    console.log("Esta mierda nunca entra aqui");
-    return Response.json({ error: "User not logged in" }, { status: 403 });
-  }
-
-  const strapi_res = await api.delete(`availabilities/${avail_id}`, {
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-    },
+  await prisma.availability.delete({
+    where: { id: Number(avail_id) },
   });
 
-  if (strapi_res.status == 204) {
-    return Response.json({ message: "Se borro exitosamente" });
-  }
-  return Response.json(
-    { error: "Error al eliminar la disponibilidad" },
-    { status: 506 }
-  );
+  return Response.json({ message: "Se borro exitosamente" });
 }

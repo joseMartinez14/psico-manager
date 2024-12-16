@@ -5,9 +5,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { setCookie } from 'cookies-next'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+import firebase_app from '../firebase/config';
 
 interface LoginFormValues {
     email: string;
@@ -32,21 +35,30 @@ export default function LoginPage() {
         event.preventDefault();
         console.log(formData);
 
+        const auth = getAuth(firebase_app);
 
-        axios.post('/api/admin/login', formData, { withCredentials: true })
-            .then((res) => {
-                console.log(res)
+        console.log("Handle submit")
+
+        signInWithEmailAndPassword(auth, formData.email, formData.password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                const token = await user.getIdToken();
+                setCookie("psicoStrapiToken", token)
+
                 router.push("admin")
-
             })
             .catch((error) => {
-                console.error(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+
+                console.error(errorCode, " ", errorMessage)
+
                 Swal.fire({
                     title: "Error",
                     text: "Error en las credenciales",
                     icon: "error"
                 });
-            })
+            });
 
     };
 

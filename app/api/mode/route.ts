@@ -1,14 +1,12 @@
-import api from "@/app/config";
+import { prisma } from "@/prisma/config";
 
 export async function GET() {
   try {
-    const res = await api.get("modes");
-    const data = res.data.data;
-    const data_structured = data.map(
-      (app: { Mode: string; documentId: string }) => {
-        return { value: app.Mode, id: app.documentId };
-      }
-    );
+    const data = await prisma.mode.findMany();
+
+    const data_structured = data.map((app) => {
+      return { value: app.mode, id: app.id };
+    });
 
     return Response.json(data_structured);
   } catch (error) {

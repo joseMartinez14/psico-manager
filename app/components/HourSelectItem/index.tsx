@@ -46,7 +46,6 @@ const HourSelectItem = (props: HourSelectItemProps) => {
     }
 
     const handleClick = () => {
-        console.log("Click ", hourValue, state, id)
         if (state != "unavailable") {
             onChange(id);
             onSelect(hourValue);
