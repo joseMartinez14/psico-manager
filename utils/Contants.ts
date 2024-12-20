@@ -11,6 +11,15 @@ export const COLORS = {
   selected: "#0C41FF",
 };
 
+export const home_sobre_nosotros =
+  "Inserte: Puntos de contacto, referencias de la profesión o cualquier detalle relevante del profesional.";
+export const home_portacion_armas =
+  "Explicación breve o datos relevantes sobre o para el servicio (Portación de armas)";
+export const home_terapia =
+  "Explicación breve o datos relevantes sobre o para el servicio (Terapia psicológica)";
+export const home_diagnosis =
+  "Explicación breve o datos relevantes sobre o para el servicio (Psico-diagnosis)";
+
 export const email_template_html = `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"

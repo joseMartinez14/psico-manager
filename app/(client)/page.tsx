@@ -3,13 +3,14 @@ import "@fontsource/montserrat-alternates/400.css"
 import HomeCards from "../components/Home/HomeCards";
 import AppointmentButtom from "../components/Home/AppointmentButtom";
 import axios from "axios";
+import { home_diagnosis, home_portacion_armas, home_sobre_nosotros, home_terapia } from "@/utils/Contants";
 
-type cardsTexts = {
-  SobreNosotros: string;
-  PortacionArmas: string;
-  Terapia: string;
-  Diagnosis: string;
-}
+// type cardsTexts = {
+//   SobreNosotros: string;
+//   PortacionArmas: string;
+//   Terapia: string;
+//   Diagnosis: string;
+// }
 
 // type commentType = {
 //   nombre: string;
@@ -17,26 +18,26 @@ type cardsTexts = {
 // }
 
 
-async function getCardText(card: string): Promise<cardsTexts> {
-  try {
-    const res = await axios.get(`${process.env.STRAPI_API_URL}/${card}`)
-    const data: cardsTexts = await res.data.data;
-    return {
-      SobreNosotros: data.SobreNosotros,
-      PortacionArmas: data.PortacionArmas,
-      Terapia: data.Terapia,
-      Diagnosis: data.Diagnosis
-    };
-  } catch (error) {
-    console.error(error)
-    return {
-      SobreNosotros: "",
-      PortacionArmas: "",
-      Terapia: "",
-      Diagnosis: ""
-    };
-  }
-}
+// async function getCardText(card: string): Promise<cardsTexts> {
+//   try {
+//     const res = await axios.get(`${process.env.STRAPI_API_URL}/${card}`)
+//     const data: cardsTexts = await res.data.data;
+//     return {
+//       SobreNosotros: data.SobreNosotros,
+//       PortacionArmas: data.PortacionArmas,
+//       Terapia: data.Terapia,
+//       Diagnosis: data.Diagnosis
+//     };
+//   } catch (error) {
+//     console.error(error)
+//     return {
+//       SobreNosotros: "",
+//       PortacionArmas: "",
+//       Terapia: "",
+//       Diagnosis: ""
+//     };
+//   }
+// }
 
 // async function getComments(): Promise<commentType[] | null> {
 //   try {
@@ -61,7 +62,7 @@ async function getCardText(card: string): Promise<cardsTexts> {
 
 export default async function Home() {
 
-  const card_text: cardsTexts = await getCardText("home-card")
+  // const card_text: cardsTexts = await getCardText("home-card")
   // const comments = await getComments();
 
   return (
@@ -102,10 +103,10 @@ export default async function Home() {
           </Typography>
         </Box>
         <HomeCards
-          SobreNosotros={card_text.SobreNosotros}
-          PortacionArmas={card_text.PortacionArmas}
-          Terapia={card_text.Terapia}
-          Diagnosis={card_text.Diagnosis}
+          SobreNosotros={home_sobre_nosotros}
+          PortacionArmas={home_portacion_armas}
+          Terapia={home_terapia}
+          Diagnosis={home_diagnosis}
         />
         <AppointmentButtom />
         {/* Se deshabilitan los comentarios porque no hay una forma facil de ponerlos */}
