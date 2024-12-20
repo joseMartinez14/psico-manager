@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import "@fontsource/montserrat-alternates/400.css"
 import HomeCards from "../components/Home/HomeCards";
 import AppointmentButtom from "../components/Home/AppointmentButtom";
-import axios from "axios";
 import { home_diagnosis, home_portacion_armas, home_sobre_nosotros, home_terapia } from "@/utils/Contants";
 
 // type cardsTexts = {
