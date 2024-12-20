@@ -4,10 +4,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  // Uses connection pooling
   url       = env("POSTGRES_PRISMA_URL")
-  // Uses direct connection, ⚠️ make sure to keep this to `POSTGRES_URL_NON_POOLING`
-  // or you'll have dangling databases from migrations
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
@@ -47,7 +44,7 @@ model Appointment {
   availability      Availability    @relation(fields: [availabilityId], references: [id])
   availabilityId    Int             @unique
   mode              Mode            @relation(fields: [modeId], references: [id])
-  modeId            Int             @unique
+  modeId            Int
   appointmentType   AppointmentType @relation(fields: [appointmentTypeId], references: [id])
-  appointmentTypeId Int             @unique
+  appointmentTypeId Int
 }
