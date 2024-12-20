@@ -4,6 +4,8 @@ import { formatUTCTimeTo12Hour } from "@/utils/DateTime";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    await prisma.$disconnect();
+    await prisma.$connect();
 
     let day = searchParams.get("day");
     let month = searchParams.get("month");

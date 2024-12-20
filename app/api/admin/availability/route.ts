@@ -10,6 +10,8 @@ interface addAvailabilityReturn {
 
 export async function POST(req: Request) {
   const cookieStore = await cookies();
+  await prisma.$disconnect();
+  await prisma.$connect();
 
   const token = cookieStore.get("psicoStrapiToken");
   if (!token) {

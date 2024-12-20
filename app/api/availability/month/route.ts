@@ -4,6 +4,8 @@ import { getCRdayFromUTC } from "@/utils/DateTime";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    await prisma.$disconnect();
+    await prisma.$connect();
 
     let month = searchParams.get("month");
     let year = searchParams.get("year");
