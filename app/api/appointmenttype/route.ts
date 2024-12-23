@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/config";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   // await prisma.$disconnect();

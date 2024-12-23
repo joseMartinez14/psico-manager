@@ -130,8 +130,6 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
     useEffect(() => {
         setLoadingCalendar(false);
         //changeParams();
-        console.log("---------------------")
-        console.log(monthAvailability)
     }, [monthAvailability]);
 
     useEffect(() => {

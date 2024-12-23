@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/config";
+import { prisma } from "@/lib/prisma";
 import { formatCRUTCDate, formatUTCTimeTo12Hour } from "@/utils/DateTime";
 import { sendEmail } from "@/utils/email";
 import { isAuthenticated } from "@/utils/email/auth";

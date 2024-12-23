@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/config";
+import { prisma } from "@/lib/prisma";
 import { getCostaRicaToUTCTime, getCRDateFromUTC } from "@/utils/DateTime";
 import { isAuthenticated } from "@/utils/email/auth";
 import { cookies } from "next/headers";

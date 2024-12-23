@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/config";
+import { prisma } from "@/lib/prisma";
 import { getCRdayFromUTC } from "@/utils/DateTime";
 
 export async function GET(request: Request) {
