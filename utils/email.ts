@@ -1,6 +1,6 @@
 import { email_template_html } from "@/utils/Contants";
 import { formatCRUTCDate, formatUTCTimeTo12Hour } from "./DateTime";
-import { prisma } from "@/prisma/config";
+import { prisma } from "@/lib/prisma";
 
 const brevo = require("@getbrevo/brevo");
 const apiInstance = new brevo.TransactionalEmailsApi();
