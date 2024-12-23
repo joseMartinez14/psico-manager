@@ -1,8 +1,8 @@
 import { prisma } from "@/prisma/config";
 
 export async function GET() {
-  await prisma.$disconnect();
-  await prisma.$connect();
+  // await prisma.$disconnect();
+  // await prisma.$connect();
   try {
     const data = await prisma.appointmentType.findMany();
     const data_structured = data.map((app) => {

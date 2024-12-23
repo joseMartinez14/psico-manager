@@ -7,8 +7,8 @@ import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  await prisma.$disconnect();
-  await prisma.$connect();
+  // await prisma.$disconnect();
+  // await prisma.$connect();
 
   const availability = await prisma.availability.findUnique({
     where: { id: Number(data.appointmentHour) },
