@@ -248,7 +248,7 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
                             alignItems: 'center',
                             flexDirection: 'column',
                         }}>
-                        <TextInput control={control} title='Correo electronico' value='email' isRequired={true} styles={{ width: '350px' }} error={errors?.email ? "Inserte su correo" : undefined} />
+                        <TextInput control={control} title='Correo electrónico' value='email' isRequired={true} styles={{ width: '350px' }} error={errors?.email ? "Inserte su correo" : undefined} />
                     </Box>
                 </Grid2>
                 <Grid2 size={{ lg: 6, md: 12, xs: 12 }}>
@@ -259,7 +259,7 @@ const CitaFormComponent = (props: CitaFormComponentProps) => {
                             alignItems: 'center',
                             flexDirection: 'column',
                         }}>
-                        <TextInput control={control} title='Numero de telefono' value='phone' isRequired={true} styles={{ width: '350px' }} error={errors?.phone ? "Inserte su numero de telefono" : undefined} justNumber={true} />
+                        <TextInput control={control} title='Número de teléfono' value='phone' isRequired={true} styles={{ width: '350px' }} error={errors?.phone ? "Inserte su número de teléfono" : undefined} justNumber={true} />
                     </Box>
                 </Grid2>
 
