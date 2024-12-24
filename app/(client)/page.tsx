@@ -98,7 +98,7 @@ export default async function Home() {
               padding: 0,
               fontWeight: 300,
             }}>
-            {"Psicologa clinica"}
+            {"Psicóloga clínica"}
           </Typography>
         </Box>
         <HomeCards
