@@ -18,7 +18,9 @@ export async function sendEmail(appointment_id: string) {
   const sendSmtpEmail = new brevo.SendSmtpEmail();
 
   sendSmtpEmail.subject = "Cita agendada con Dra. Nicole Rivera";
-  sendSmtpEmail.to = [{ email: data?.email, name: data?.clientName }]; //Aqui poner el correo de nicole para avisar cuando hay una cita nueva
+  sendSmtpEmail.to = [
+    { email: data?.email.toLowerCase(), name: data?.clientName },
+  ]; //Aqui poner el correo de nicole para avisar cuando hay una cita nueva
   sendSmtpEmail.sender = {
     name: "Nicole Psicologa",
     email: "josems0899@gmail.com",

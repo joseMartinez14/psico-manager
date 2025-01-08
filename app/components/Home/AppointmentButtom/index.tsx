@@ -1,5 +1,5 @@
 'use client'
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -26,29 +26,33 @@ const AppointmentButtom = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                <div style={{ width: '100%' }} onClick={() => router.push('/cita')}>
-                    <Typography
-                        textAlign={'center'}
-                        variant="h2"
-                        color="#FA7899"
-                        sx={{
-                            fontFamily: ["Montserrat Alternates"].join(","),
-                            fontSize: {
-                                xs: '18px',
-                                sm: '20px',
-                                md: '22px',
-                                lg: '25px'
-                            },
-                            // fontSize: '25px',
-                            fontWeight: 'bold',
-                        }}>
-                        {"Reserva tu cita"}
-
-                    </Typography>
-                </div>
+                <Button
+                    onClick={() => router.push('/cita')}
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        textTransform: 'none',
+                        background: 'none',
+                        border: 'none',
+                        color: '#FA7899',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontFamily: ["Montserrat Alternates"].join(","),
+                        fontWeight: 'bold',
+                        fontSize: {
+                            xs: '18px',
+                            sm: '20px',
+                            md: '22px',
+                            lg: '25px'
+                        },
+                    }}
+                >
+                    Reserva tu cita
+                </Button>
             </Box>
         </Box>
-    )
+    );
 }
 
 export default AppointmentButtom
